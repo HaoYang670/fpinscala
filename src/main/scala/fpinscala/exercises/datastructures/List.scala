@@ -68,7 +68,11 @@ object List: // `List` companion object. Contains functions for creating and wor
         then dropWhile(tail, f)
         else l
 
-  def init[A](l: List[A]): List[A] = ???
+  def init[A](l: List[A]): List[A] =
+    l match
+      case Nil => throw new java.lang.Exception("Nil")
+      case Cons(_, Nil) => Nil
+      case Cons(head, tail) => Cons(head, init(tail)) 
 
   def length[A](l: List[A]): Int = ???
 
