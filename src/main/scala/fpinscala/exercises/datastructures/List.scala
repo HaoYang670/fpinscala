@@ -106,7 +106,10 @@ object List: // `List` companion object. Contains functions for creating and wor
       case Nil => Nil
       case Cons(head, tail) => Cons(head + 1, incrementEach(tail))
 
-  def doubleToString(l: List[Double]): List[String] = ???
+  def doubleToString(l: List[Double]): List[String] =
+    l match
+      case Nil => Nil
+      case Cons(head, tail) => Cons(head.toString(), doubleToString(tail))
 
   def map[A,B](l: List[A], f: A => B): List[B] = ???
 
