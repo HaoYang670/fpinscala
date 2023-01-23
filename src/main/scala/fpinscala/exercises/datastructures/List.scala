@@ -138,7 +138,10 @@ object List: // `List` companion object. Contains functions for creating and wor
         else Nil
     )
 
-  def addPairwise(a: List[Int], b: List[Int]): List[Int] = ???
+  def addPairwise(a: List[Int], b: List[Int]): List[Int] =
+    (a, b) match
+      case (Nil, _) | (_, Nil) => Nil
+      case (Cons(hda, tla), Cons(hdb, tlb)) => Cons(hda + hdb, addPairwise(tla, tlb))
 
   // def zipWith - TODO determine signature
 
