@@ -111,7 +111,10 @@ object List: // `List` companion object. Contains functions for creating and wor
       case Nil => Nil
       case Cons(head, tail) => Cons(head.toString(), doubleToString(tail))
 
-  def map[A,B](l: List[A], f: A => B): List[B] = ???
+  def map[A,B](l: List[A], f: A => B): List[B] =
+    l match
+      case Nil => Nil
+      case Cons(head, tail) => Cons(f(head), map(tail, f))
 
   def filter[A](as: List[A], f: A => Boolean): List[A] = ???
 
