@@ -129,7 +129,14 @@ object List: // `List` companion object. Contains functions for creating and wor
       case Nil => Nil
       case Cons(hd, tl) => concat(map(as, f))     
 
-  def filterViaFlatMap[A](as: List[A], f: A => Boolean): List[A] = ???
+  def filterViaFlatMap[A](as: List[A], f: A => Boolean): List[A] =
+    flatMap(
+      as,
+      a =>
+        if f(a)
+        then Cons(a, Nil)
+        else Nil
+    )
 
   def addPairwise(a: List[Int], b: List[Int]): List[Int] = ???
 
