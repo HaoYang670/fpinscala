@@ -51,7 +51,7 @@ object List: // `List` companion object. Contains functions for creating and wor
     case Nil => throw new java.lang.Exception("Nil")
     case Cons(head, tail) => tail
 
-  def setHead[A](l: List[A], h: A): List[A] = ???
+  def setHead[A](l: List[A], h: A): List[A] = Cons(h, tail(l))
 
   def drop[A](l: List[A], n: Int): List[A] = ???
 
