@@ -125,7 +125,14 @@ object PolymorphicFunctions:
 
   // Exercise 2: Implement a polymorphic function to check whether
   // an `Array[A]` is sorted
-  def isSorted[A](as: Array[A], gt: (A, A) => Boolean): Boolean = ???
+  def isSorted[A](as: Array[A], gt: (A, A) => Boolean): Boolean =
+    @annotation.tailrec
+    def check(len: Int): Boolean =
+      if len < 2 then true
+      else if gt(as(len - 2), as(len - 1)) then false
+      else check(len - 1)
+
+    check(as.length)
 
   // Polymorphic functions are often so constrained by their type
   // that they only have one implementation! Here's an example:
