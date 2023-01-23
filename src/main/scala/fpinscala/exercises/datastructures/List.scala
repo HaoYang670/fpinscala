@@ -145,4 +145,13 @@ object List: // `List` companion object. Contains functions for creating and wor
 
   // def zipWith - TODO determine signature
 
-  def hasSubsequence[A](sup: List[A], sub: List[A]): Boolean = ???
+  def hasSubsequence[A](sup: List[A], sub: List[A]): Boolean =
+    (sup, sub) match
+      case (Nil, Nil) => true
+      case (Nil, _) => false
+      case (_, Nil) => true
+      case (Cons(hda, tla), Cons(hdb, tlb)) =>
+        if (hda == hdb) && hasSubsequence(tla, tlb)
+        then true
+        else hasSubsequence(tla, sub)
+    
