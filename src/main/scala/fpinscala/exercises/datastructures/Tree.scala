@@ -40,7 +40,13 @@ object Tree:
     case Leaf(_) => 1
     case Branch(l,r) => 1 + size(l) + size(r)
 
-  extension (t: Tree[Int]) def firstPositive: Int = ???
+  extension (t: Tree[Int]) def firstPositive: Int =
+    t match
+      case Leaf(value) => value
+      case Branch(left, right) =>
+        if left.firstPositive > 0
+        then left.firstPositive
+        else right.firstPositive
 
   extension (t: Tree[Int]) def maximum: Int =
     t match
