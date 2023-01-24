@@ -7,15 +7,33 @@ enum Option[+A]:
   case Some(get: A)
   case None
 
-  def map[B](f: A => B): Option[B] = ???
+  def map[B](f: A => B): Option[B] =
+    this match
+      case Some(get) => Some(f(get))
+      case None => None
 
-  def getOrElse[B>:A](default: => B): B = ???
+  def getOrElse[B>:A](default: => B): B =
+    this match
+      case Some(get) => get
+      case None => default
 
-  def flatMap[B](f: A => Option[B]): Option[B] = ???
+  def flatMap[B](f: A => Option[B]): Option[B] =
+    this match
+      case Some(get) => f(get)
+      case None => None    
 
-  def orElse[B>:A](ob: => Option[B]): Option[B] = ???
+  def orElse[B>:A](ob: => Option[B]): Option[B] =
+    this match
+      case Some(_) => this
+      case None => ob
 
-  def filter(f: A => Boolean): Option[A] = ???
+  def filter(f: A => Boolean): Option[A] =
+    this match
+      case Some(get) =>
+        if f(get)
+        then this
+        else None
+      case None => None
 
 object Option:
 
@@ -36,10 +54,32 @@ object Option:
     if xs.isEmpty then None
     else Some(xs.sum / xs.length)
 
-  def variance(xs: Seq[Double]): Option[Double] = ???
+  def variance(xs: Seq[Double]): Option[Double] =
+    this.mean(xs)
+      .flatMap(
+        m => this.mean(
+          xs.map(x => math.pow(x - m, 2))
+        )
+      )
+    
 
-  def map2[A,B,C](a: Option[A], b: Option[B])(f: (A, B) => C): Option[C] = ???
+  def map2[A,B,C](a: Option[A], b: Option[B])(f: (A, B) => C): Option[C] =
+    (a, b) match
+      case (None, _) | (_, None) => None
+      case (Some(a), Some(b)) => Some(f(a, b))
 
-  def sequence[A](as: List[Option[A]]): Option[List[A]] = ???
+  def sequence[A](as: List[Option[A]]): Option[List[A]] =
+    as match
+      case Nil => Some(Nil)
+      case hd :: tl =>
+        hd.flatMap(hd =>
+          sequence(tl).map(tl =>
+            hd :: tl))
 
-  def traverse[A, B](as: List[A])(f: A => Option[B]): Option[List[B]] = ???
+  def traverse[A, B](as: List[A])(f: A => Option[B]): Option[List[B]] =
+    as match
+      case Nil => Some(Nil)
+      case hd :: tl =>
+        f(hd).flatMap(hd => 
+          traverse(tl)(f).map(tl =>
+            hd :: tl))
